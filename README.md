@@ -12,25 +12,25 @@ Welcome to the **Production-Grade API Design Course**. This repo contains **all 
 ### Beginner → Intermediate → Advanced → Expert
 
 #### Beginner
-1. [Module 1 – Flask Fundamentals & API Basics](modules/01-flask-fundamentals.md)
-2. [Module 2 – Modular API Architecture & Blueprints](modules/02-modular-architecture.md)
-3. [Module 3 – Validation & Serialization](modules/03-validation.md)
-4. [Module 4 – Error Handling & Structured Responses](modules/04-error-handling.md)
+1. [Module 1 – API Fundamentals & Basics](01-api-fundamentals.md)
+2. [Module 2 – Modular API Architecture & Blueprints](02-restful-api.md)
 
-#### Intermediate
-5. [Module 5 – Authentication & JWT](modules/05-auth-jwt.md)
-6. [Module 6 – API Documentation & Testing](modules/06-doc-testing.md)
-7. [Module 7 – Performance Optimization & Caching](modules/07-performance.md)
-8. [Module 8 – API Versioning & Multi-Tenant Design](modules/08-versioning-multitenancy.md)
+3. [Module 3 – Flask Architecture](03-flask-architecture.md)
+4. [Module 4 – Error Handling & Structured Responses](04-validation-errors.md)
 
-#### Advanced
-9. [Module 9 – Advanced Authentication & OAuth2](modules/09-advanced-auth.md)
-10. [Module 10 – Monitoring, Logging & Observability](modules/10-api-monitoring.md)
-11. [Module 11 – Performance at Scale](modules/11-performance-scaling.md)
+### Intermediate
+5. [Module 5 – Authentication & JWT](05-auth.md)
+6. [Module 6 – API Security](06-security.md)
+7. [Module 7 – Performance Optimization & Caching](07-performance.md)
+8. [Module 8 – API Versioning & Multi-Tenant Design](08-versioning-tenancy.md)
 
-#### Expert
-12. [Module 12 – Multi-Tenant SaaS & Advanced Versioning](modules/12-multitenancy-advanced.md)
+### Advanced
+9. [Module 9 – Advanced Authentication & OAuth2](09-advanced-auth.md)
+10. *[Module 10 – Monitoring, Logging & Observability](10-api-monitoring.md)
+11. *[Module 11 – Performance at Scale](11-performance-scaling.md)
 
+### Expert
+12. *[Module 12 – Multi-Tenant SaaS & Advanced Versioning](12-multitenancy-advanced.md)
 ---
 
 ## Projects
