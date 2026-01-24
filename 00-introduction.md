@@ -23,9 +23,9 @@ By the end, you'll be able to design APIs that work in **internal systems, SaaS 
 | Level | Modules | Focus |
 |-------|--------|-------|
 | Beginner | 1–4 | HTTP, REST, Flask architecture, validation & errors |
-| Intermediate | 5–6 | Authentication, authorization, security best practices |
-| Advanced | 7–8 | Performance, caching, scaling, versioning, multi-tenancy |
-| Expert | 9 | Mid-course + Final Project - End-to-end production-ready API design |
+| Intermediate | 5–8 | Authentication, authorization, security best practices |
+| Advanced | 9–11 | Performance, caching, scaling, versioning, multi-tenancy |
+| Expert | 12 | Mid-course + Final Project - End-to-end production-ready API design |
 
 ---
 
