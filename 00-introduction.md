@@ -51,6 +51,9 @@ By the end, you'll be able to design APIs that work in **internal systems, SaaS 
 
 ## Repo Structure & Usage
 
+Here’s your folder structure in **Markdown** format with proper code block formatting for clarity:
+
+```markdown
 API_Flask
 │
 ├── README.md                 # Course overview & navigation
@@ -69,8 +72,7 @@ API_Flask
 ├── glossary.md               # Key terms
 ├── instructor-guide.md       # Tips & pacing
 └── certificate-template.md   # Markdown certificate
-
-
+```
 
 ### Navigation Tips
 - Complete modules **in order** for foundational knowledge.
