@@ -223,4 +223,3 @@ def get_user(user_id):
 * [RFC 9110 – HTTP Semantics](https://www.rfc-editor.org/rfc/rfc9110)
 * [REST Constraints Overview](https://restfulapi.net/)
 
-```
