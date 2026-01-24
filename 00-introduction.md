@@ -52,24 +52,24 @@ By the end, you'll be able to design APIs that work in **internal systems, SaaS 
 ## Repo Structure & Usage
 
 ### Beginner
-1. [Module 1 – API Fundamentals & Basics](01-api-fundamentals.md)
-2. [Module 2 – Modular API Architecture & Blueprints](02-restful-api.md)
-3. [Module 3 – Flask Architecture](03-flask-architecture.md)
-4. [Module 4 – Error Handling & Structured Responses](04-validation-errors.md)
+1. [Module 1 – API Fundamentals & HTTP](01-api-fundamentals.md)
+2. [Module 2 – RESTful API Design](02-restful-api.md)
+3. [Module 3 – Flask API Architecture](03-flask-architecture.md)
+4. [Module 4 – Data Validation, Errors & Serialization](04-validation-errors.md)
 
 ### Intermediate
-5. [Module 5 – Authentication & JWT](05-auth.md)
-6. [Module 6 – API Security](06-security.md)
-7. [Module 7 – Performance Optimization & Caching](07-performance.md)
+5. [Module 5 – Authentication & Authorization](05-auth.md)
+6. [Module 6 – API Security & Threat Modeling](06-security.md)
+7. [Module 7 – API Performance & Optimization](07-performance.md)
 8. [Module 8 – API Versioning & Multi-Tenant Design](08-versioning-tenancy.md)
 
 ### Advanced
-9. [Module 9 – Advanced Authentication & OAuth2](09-advanced-auth.md)
-10. *[Module 10 – Monitoring, Logging & Observability](10-api-monitoring.md)
-11. *[Module 11 – Performance at Scale](11-performance-scaling.md)
+9. [Module 9 – Advanced Authentication & Authorization](09-advanced-auth.md)
+10. [Module 10 – Monitoring, Logging & Observability](10-api-monitoring.md)
+11. [Module 11 – Performance Optimization & Scaling](11-performance-scaling.md)
 
 ### Expert
-12. *[Module 12 – Multi-Tenant SaaS & Advanced Versioning](12-multitenancy-advanced.md)
+12. [Module 12 – Multi-Tenant API Design & Versioning](12-multitenancy-advanced.md)
 
 ### Navigation Tips
 - Complete modules **in order** for foundational knowledge.
