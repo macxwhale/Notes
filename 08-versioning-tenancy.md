@@ -1,6 +1,3 @@
-### `08-versioning-multitenancy.md`
-
-````markdown
 # Module 8 – API Versioning & Multi-Tenant Design
 
 ## Module Overview
@@ -271,5 +268,3 @@ class UserSchemaV2(Schema):
 * [Multi-Tenant SaaS Architecture](https://martinfowler.com/articles/multi-tenant.html)
 * [Marshmallow Schema Versioning](https://marshmallow.readthedocs.io/en/stable/)
 * [OWASP Multi-Tenancy Risks](https://owasp.org/www-project-top-ten-2021/Top_10_2021_Appendix_TEN)
-
-```

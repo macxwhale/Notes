@@ -1,6 +1,3 @@
-### `02-restful-api.md`
-
-```markdown
 # Module 2 – RESTful API Design
 
 ## Module Overview
@@ -36,11 +33,9 @@ By the end, you will understand how to design APIs that are intuitive, predictab
 
 **Examples:**
 ```
-
 GET /users
 GET /users/123
 GET /users/123/orders
-
 ```
 
 ---
@@ -56,9 +51,7 @@ GET /users/123/orders
 
 **Filtering Example:**  
 ```
-
 GET /orders?status=shipped&sort=created_at
-
 ```
 
 ---
@@ -70,9 +63,7 @@ GET /orders?status=shipped&sort=created_at
 
 **Example:**
 ```
-
 GET /products?category=electronics&limit=20&offset=40&sort=-price
-
 ````
 
 ---
@@ -218,5 +209,3 @@ def list_users():
 * [REST Constraints Overview](https://restfulapi.net/)
 * [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
 * [Flask Official Documentation](https://flask.palletsprojects.com/)
-
-```

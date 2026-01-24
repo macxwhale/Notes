@@ -36,6 +36,7 @@ By the end, you'll be able to design APIs that work in **internal systems, SaaS 
 - Secure APIs against common attacks
 - Optimize APIs for performance and scalability
 - Apply versioning and backward compatibility strategies
+- Implement automated testing and CI/CD pipelines
 
 ---
 
@@ -70,6 +71,8 @@ By the end, you'll be able to design APIs that work in **internal systems, SaaS 
 
 ### Expert
 12. [Module 12 – Multi-Tenant API Design & Versioning](12-multitenancy-advanced.md)
+13. [Module 13 – Testing Strategies](13-testing.md)
+14. [Module 14 – Documentation & Deployment](14-deployment.md)
 
 ### Navigation Tips
 - Complete modules **in order** for foundational knowledge.

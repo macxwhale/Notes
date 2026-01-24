@@ -1,6 +1,3 @@
-### `05-auth.md`
-
-````markdown
 # Module 5 – Authentication & Authorization
 
 ## Module Overview
@@ -227,5 +224,3 @@ def admin_route():
 * [OAuth2 Overview](https://oauth.net/2/)
 * [OWASP Authentication Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html)
 * [JWT Best Practices](https://www.rfc-editor.org/rfc/rfc7519)
-
-```

@@ -1,6 +1,3 @@
-## `09-advanced-auth.md` – Advanced Authentication & Authorization
-
-````markdown
 # Module 9 – Advanced Authentication & Authorization
 
 ## Module Overview
@@ -108,4 +105,3 @@ def check_if_token_revoked(jwt_header, jwt_payload):
 * [Flask-JWT-Extended Docs](https://flask-jwt-extended.readthedocs.io/)
 * [Authlib OAuth2](https://docs.authlib.org/)
 * [OAuth2 RFC 6749](https://www.rfc-editor.org/rfc/rfc6749)
-````

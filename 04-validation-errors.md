@@ -1,6 +1,3 @@
-### `04-validation-errors.md`
-
-````markdown
 # Module 4 – Data Validation, Errors & Serialization
 
 ## Module Overview
@@ -261,5 +258,3 @@ def create_product():
 * [Marshmallow Docs](https://marshmallow.readthedocs.io/en/stable/)
 * [Flask Error Handling](https://flask.palletsprojects.com/en/latest/errorhandling/)
 * [API Design – Consistent Error Responses](https://cloud.google.com/apis/design/errors)
-
-```

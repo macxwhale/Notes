@@ -1,6 +1,3 @@
-### `06-security.md`
-
-````markdown
 # Module 6 – API Security & Threat Modeling
 
 ## Module Overview
@@ -241,5 +238,3 @@ text = bleach.clean(request.json.get("text", ""))
 * [Flask-Talisman](https://github.com/GoogleCloudPlatform/flask-talisman)
 * [Input Sanitization with Bleach](https://bleach.readthedocs.io/)
 * [OWASP Threat Modeling](https://owasp.org/www-community/Threat_Modeling)
-
-```

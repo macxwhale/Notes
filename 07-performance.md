@@ -1,6 +1,3 @@
-### `07-performance.md`
-
-````markdown
 # Module 7 – API Performance & Optimization
 
 ## Module Overview
@@ -260,5 +257,3 @@ def list_users():
 * [SQLAlchemy Eager Loading](https://docs.sqlalchemy.org/en/14/orm/loading_relationships.html)
 * [API Performance Best Practices](https://www.nginx.com/blog/7-tips-for-optimizing-your-restful-api/)
 * [Prometheus + Grafana](https://prometheus.io/docs/visualization/grafana/)
-
-```

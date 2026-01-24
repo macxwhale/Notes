@@ -1,6 +1,3 @@
-### `03-flask-architecture.md`
-
-````markdown
 # Module 3 – Flask API Architecture
 
 ## Module Overview
@@ -268,5 +265,3 @@ class Config:
 * [Flask Application Factories](https://flask.palletsprojects.com/en/latest/patterns/appfactories/)
 * [Flask Blueprints](https://flask.palletsprojects.com/en/latest/blueprints/)
 * [12-Factor App Config](https://12factor.net/config)
-
-```
