@@ -97,9 +97,21 @@ Talisman(app)
 
 ---
 
-### 6. Common Mistakes
+### 6. CORS & Security Headers
+**CORS (Cross-Origin Resource Sharing)**: Controls which domains can access your API.
+**Security Headers**: Protect against XSS, Clickjacking, MIME sniffing.
 
+**Flask-CORS:**
+```python
+from flask_cors import CORS
+CORS(app, resources={r"/api/*": {"origins": "https://myapp.com"}})
+```
+
+---
+
+### 7. Common Mistakes
 * Ignoring rate limiting
+* Enabling `Access-Control-Allow-Origin: *` in production (CORS wildcard)
 * Exposing internal errors in responses
 * Over-permissive CORS
 * Returning raw stack traces

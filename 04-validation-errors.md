@@ -48,6 +48,21 @@ class UserSchema(Schema):
 * `dump_only=True` → field only appears in output
 * `required=True` → field must exist in input
 
+### Custom Validators
+You can perform complex checks (e.g., checking if an email is unique) using `@validates`:
+
+```python
+from marshmallow import validates, ValidationError
+
+class UserSchema(Schema):
+    email = fields.Email(required=True)
+
+    @validates("email")
+    def validate_email(self, value):
+        if User.query.filter_by(email=value).first():
+            raise ValidationError("Email already registered.")
+```
+
 ---
 
 ### 3. Serialization & Deserialization
@@ -65,9 +80,26 @@ data = user_schema.load({"name": "Alice", "email": "alice@example.com"})
 json_data = user_schema.dump(data)
 ```
 
+### 4. Partial Updates (PATCH)
+For `PATCH` requests, fields are optional. Use `partial=True`.
+
+```python
+@app.route("/users/<int:user_id>", methods=["PATCH"])
+def update_user(user_id):
+    user = User.query.get(user_id)
+    # Ignore missing fields in payload
+    data = user_schema.load(request.json, partial=True)
+    
+    for key, value in data.items():
+        setattr(user, key, value)
+        
+    db.session.commit()
+    return user_schema.dump(user), 200
+```
+
 ---
 
-### 4. Error Handling
+### 5. Error Handling
 
 * Standardize error responses to make APIs predictable
 * Example structure:
@@ -100,7 +132,7 @@ def handle_validation_error(e):
 
 ---
 
-### 5. Common Mistakes
+### 6. Common Mistakes
 
 * Returning raw exceptions to clients
 * Ignoring required fields

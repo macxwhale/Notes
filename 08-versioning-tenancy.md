@@ -114,8 +114,18 @@ class UserSchemaV2(Schema):
 
 ---
 
-### 6. Common Mistakes
+### 6. API Deprecation Strategy
+When removing an old version (`v1`), communicate it clearly:
+1.  **Sunset Header**: Date when the endpoint becomes unresponsive.
+    `Sunset: Sat, 31 Dec 2023 23:59:59 GMT`
+2.  **Deprecation Header**: Warn clients.
+    `Deprecation: true`
+3.  **Link Header**: Point to the new version.
+    `Link: </v2/users>; rel="successor-version"`
 
+---
+
+### 7. Common Mistakes
 * Breaking clients by changing fields silently
 * Ignoring tenant isolation → data leaks
 * Hardcoding version in logic (use routers/blueprints)

@@ -120,9 +120,26 @@ def admin_route():
 
 ---
 
-### 7. Common Mistakes
+### 7. Password Hashing Best Practices
+**NEVER store plain text passwords.**
+Use a strong hashing algorithm like `bcrypt`, `Argon2`, or `pbkdf2`.
 
+**Flask Example (Werkzeug):**
+```python
+from werkzeug.security import generate_password_hash, check_password_hash
+
+# 1. Hashing (Registration)
+password_hash = generate_password_hash("my_password")
+
+# 2. Verifying (Login)
+is_valid = check_password_hash(password_hash, "my_password")
+```
+
+---
+
+### 8. Common Mistakes
 * Hardcoding secrets
+* Storing passwords in plain text
 * Exposing endpoints without authorization
 * Not verifying roles or scopes
 * Ignoring token expiration

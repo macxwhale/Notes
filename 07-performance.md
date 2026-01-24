@@ -49,10 +49,11 @@ def expensive():
 
 ### 3. Database Optimization
 
-* Use indexes for frequent queries
-* Avoid N+1 queries (use joins or eager loading)
-* Limit returned fields (`SELECT id, name` vs `SELECT *`)
-* Consider query caching
+* **Indexing**: Supercharges `WHERE`, `ORDER BY`, and `JOIN`.
+    *   **Compound Indexes**: Index on `(user_id, status)` for queries filtering by both.
+* **Explain Analyze**: Use `EXPLAIN ANALYZE SELECT ...` to debug slow queries.
+* **Avoid N+1 queries**: Use joins or eager loading.
+* **Limit returned fields**: `SELECT id, name` vs `SELECT *`.
 
 **SQLAlchemy Example**
 

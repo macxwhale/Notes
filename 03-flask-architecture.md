@@ -76,6 +76,7 @@ my_flask_app/
 │   ├── __init__.py         # Application factory
 │   ├── routes.py           # Blueprints & endpoints
 │   ├── models.py           # Database models
+│   ├── extensions.py       # Flask extensions (db, migrate, jwt)
 │   ├── schemas.py          # Validation schemas
 │   └── utils.py            # Helper functions
 ├── config.py               # Environment configurations
@@ -85,7 +86,34 @@ my_flask_app/
 
 ---
 
-### 4. Configuration Management
+### 4. Avoiding Circular Imports (The `extensions.py` Pattern)
+A common error in Flask is **Circular Imports** (e.g., `app` imports `models`, `models` imports `db` from `app`).
+**Solution**: Initialize extensions in a separate `extensions.py` file.
+
+**`app/extensions.py`**
+```python
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+
+db = SQLAlchemy()
+migrate = Migrate()
+```
+
+**`app/__init__.py`** (Factory)
+```python
+from .extensions import db, migrate
+
+def create_app():
+    app = Flask(__name__)
+    ...
+    db.init_app(app)
+    migrate.init_app(app)
+    return app
+```
+
+---
+
+### 5. Configuration Management
 
 * Use **Python classes** or `.env` files for environment-specific settings
 * Example:
@@ -111,7 +139,7 @@ app.config.from_object("config.DevelopmentConfig")
 
 ---
 
-### 5. Common Mistakes
+### 6. Common Mistakes
 
 * Monolithic `app.py` with hundreds of routes
 * Hardcoding configuration values

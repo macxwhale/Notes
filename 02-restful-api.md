@@ -41,10 +41,14 @@ GET /users/123/orders
 ---
 
 ### 3. URL Design Guidelines
-- Use **nouns**, not verbs
-- Use **plural** for collections
-- Avoid deep nesting
-- Use query parameters for filtering, sorting, and pagination
+- **Use Nouns**: Resources are things (`/products`), not actions (`/getProducts`).
+- **Use Plural Names**: `/users`, `/orders`.
+- **Use Hyphens for Readability**: `/user-profiles` (not `/user_profiles` or `/userProfiles`).
+- **Use Lowercase Letters**: URLs are case-sensitive; keep it simple.
+- **Limit Nesting Depth**: Avoid deep hierarchies (max 2 levels).
+    - **Bad**: `/users/123/posts/55/comments/99`
+    - **Good**: `/products/123/comments` then `/comments/99` directly.
+- **Use Query Parameters**: For filtering (`?sort=price`), not resource identification.
 
 **Bad:** `/getUserById/123`  
 **Good:** `/users/123`
@@ -68,7 +72,27 @@ GET /products?category=electronics&limit=20&offset=40&sort=-price
 
 ---
 
-### 5. REST Anti-Patterns
+### 5. HATEOAS (Hypermedia)
+**Hypermedia as the Engine of Application State** means the API tells the client what they can do next via links.
+*   **Without HATEOAS**: Client hardcodes URLs `/orders/{id}/pay`.
+*   **With HATEOAS**: Client follows links returned in the response.
+
+**Example Response:**
+```json
+{
+  "id": 123,
+  "status": "pending",
+  "_links": {
+    "self": {"href": "/orders/123"},
+    "payment": {"href": "/orders/123/pay", "method": "POST"},
+    "cancel": {"href": "/orders/123", "method": "DELETE"}
+  }
+}
+```
+
+---
+
+### 6. REST Anti-Patterns
 - Using verbs in URLs (`/createUser`)
 - Overloading a single endpoint for multiple resources
 - Ignoring proper HTTP methods
