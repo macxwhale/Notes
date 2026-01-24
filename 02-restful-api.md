@@ -92,7 +92,58 @@ GET /products?category=electronics&limit=20&offset=40&sort=-price
 
 ---
 
-### 6. REST Anti-Patterns
+### 6. Standardized JSON Responses
+Consistency is key. Decide on a structure and stick to it.
+
+#### Success Response
+For resources, return the resource directly or wrapped in an envelope (for metadata).
+**Single Resource:**
+`GET /users/1`
+```json
+{
+  "id": 1,
+  "name": "Alice"
+}
+```
+**Collection:**
+`GET /users`
+```json
+{
+  "data": [
+    {"id": 1, "name": "Alice"},
+    {"id": 2, "name": "Bob"}
+  ],
+  "meta": {
+    "total": 100,
+    "page": 1
+  }
+}
+```
+
+#### Error Response
+Always return a consistent error object. **Never** return plain text or HTML.
+```json
+{
+  "error": {
+    "code": "validation_error",
+    "message": "Invalid email format",
+    "fields": {"email": "Must be a valid address"}
+  }
+}
+```
+
+#### Response by Verb
+| Verb | Success Code | Response Body |
+|------|-------------|---------------|
+| `GET` | 200 OK | Resource or Collection |
+| `POST` | 201 Created | The created resource (with ID) |
+| `PUT` | 200 OK | The updated resource |
+| `PATCH`| 200 OK | The updated resource |
+| `DELETE`| 204 No Content | Empty body |
+
+---
+
+### 7. REST Anti-Patterns
 - Using verbs in URLs (`/createUser`)
 - Overloading a single endpoint for multiple resources
 - Ignoring proper HTTP methods
