@@ -132,14 +132,52 @@ Always return a consistent error object. **Never** return plain text or HTML.
 }
 ```
 
-#### Response by Verb
-| Verb | Success Code | Response Body |
-|------|-------------|---------------|
-| `GET` | 200 OK | Resource or Collection |
-| `POST` | 201 Created | The created resource (with ID) |
-| `PUT` | 200 OK | The updated resource |
-| `PATCH`| 200 OK | The updated resource |
-| `DELETE`| 204 No Content | Empty body |
+#### Response Examples by Verb
+
+**1. GET (Retrieve)**
+`200 OK`
+```json
+{
+  "id": 1,
+  "name": "Alice",
+  "email": "alice@example.com"
+}
+```
+
+**2. POST (Create)**
+`201 Created` - Returns the created resource with its new ID.
+```json
+{
+  "id": 101,
+  "name": "New User",
+  "email": "new@example.com",
+  "created_at": "2023-10-01T12:00:00Z"
+}
+```
+
+**3. PUT (Full Update)**
+`200 OK` - Returns the completely replaced resource.
+```json
+{
+  "id": 1,
+  "name": "Alice Updated",
+  "email": "alice_new@example.com"
+}
+```
+
+**4. PATCH (Partial Update)**
+`200 OK` - Returns the updated resource (merged view).
+```json
+{
+  "id": 1,
+  "name": "Alice Updated",
+  "email": "alice@example.com"  // Unchanged field remains
+}
+```
+
+**5. DELETE (Remove)**
+`204 No Content`
+*(No Body)* - The server successfully processed the request and is not returning any content.
 
 ---
 
