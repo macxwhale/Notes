@@ -1,6 +1,5 @@
 ### `01-api-fundamentals.md`
 
-```markdown
 # Module 1 – API Fundamentals & HTTP
 
 ## Module Overview
