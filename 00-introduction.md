@@ -25,7 +25,7 @@ By the end, you'll be able to design APIs that work in **internal systems, SaaS 
 | Beginner | 1–4 | HTTP, REST, Flask architecture, validation & errors |
 | Intermediate | 5–6 | Authentication, authorization, security best practices |
 | Advanced | 7–8 | Performance, caching, scaling, versioning, multi-tenancy |
-| Expert | Mid-course + Final Project | End-to-end production-ready API design |
+| Expert | 9 | Mid-course + Final Project - End-to-end production-ready API design |
 
 ---
 
@@ -52,8 +52,8 @@ By the end, you'll be able to design APIs that work in **internal systems, SaaS 
 ## Repo Structure & Usage
 
 ### Beginner
-1. [Module 1 – Flask Fundamentals & API Basics](01-flask-fundamentals.md)
-2. [Module 2 – Modular API Architecture & Blueprints](02-modular-architecture.md)
+1. [Module 1 – API Fundamentals & Basics](01-api-fundamentals.md)
+2. [Module 2 – Modular API Architecture & Blueprints](02-restful-api.md)
 3. [Module 3 – Validation & Serialization](03-validation.md)
 4. [Module 4 – Error Handling & Structured Responses](04-error-handling.md)
 

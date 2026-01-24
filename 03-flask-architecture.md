@@ -1,265 +1,272 @@
-### `04-validation-errors.md`
+### `03-flask-architecture.md`
 
 ````markdown
-# Module 4 – Data Validation, Errors & Serialization
+# Module 3 – Flask API Architecture
 
 ## Module Overview
-This module teaches **how to make your APIs safe, predictable, and maintainable** by handling input validation, error responses, and serialization consistently.
+This module focuses on **structuring Flask APIs for maintainability and scalability**.  
+Proper architecture ensures your API can grow without becoming unmanageable.
 
 **Goals:**
-- Validate input data with schemas
-- Standardize error handling
-- Serialize output consistently
-- Avoid common mistakes in API payloads
+- Apply Flask application factories
+- Organize blueprints effectively
+- Separate configuration, models, and routes
+- Implement environment-based settings
 
 ---
 
 ## Lecture Content
 
-### 1. Why Validation Matters
-- Prevents **invalid or malicious data** from reaching business logic
-- Protects the API from runtime errors
-- Improves **user experience** with descriptive errors
+### 1. Flask Application Factory
+- An **application factory** is a function that creates and configures a Flask app.
+- Advantages:
+  - Supports **multiple environments**
+  - Enables **testing** with isolated app instances
+  - Encourages **modular design**
 
 **Example:**
-```json
-{
-  "name": 123
-}
+```python
+from flask import Flask
+
+def create_app(config_name="development"):
+    app = Flask(__name__)
+    if config_name == "development":
+        app.config.from_object("config.DevelopmentConfig")
+    elif config_name == "production":
+        app.config.from_object("config.ProductionConfig")
+    
+    # Register Blueprints here
+    from .routes import main_bp
+    app.register_blueprint(main_bp)
+    
+    return app
 ````
 
-If `name` should be a string, a validation schema will catch this.
-
 ---
 
-### 2. Marshmallow Schemas
+### 2. Blueprints
 
-* Marshmallow is a Python library for **serialization/deserialization and validation**
-* Define a schema for your resources
+* Blueprints allow **modular route organization**
+* Each module of your API can have its own blueprint
 
 **Example:**
 
 ```python
-from marshmallow import Schema, fields, validate
+from flask import Blueprint, jsonify
 
-class UserSchema(Schema):
-    id = fields.Int(dump_only=True)
-    name = fields.Str(required=True, validate=validate.Length(min=1))
-    email = fields.Email(required=True)
+main_bp = Blueprint("main", __name__)
+
+@main_bp.route("/health", methods=["GET"])
+def health():
+    return jsonify(status="ok"), 200
 ```
 
-* `dump_only=True` → field only appears in output
-* `required=True` → field must exist in input
-
----
-
-### 3. Serialization & Deserialization
-
-* **Serialization**: Python objects → JSON
-* **Deserialization**: JSON → Python objects
-
-**Example:**
+* Register in app factory:
 
 ```python
-user_schema = UserSchema()
-# Deserialize input
-data = user_schema.load({"name": "Alice", "email": "alice@example.com"})
-# Serialize output
-json_data = user_schema.dump(data)
+app.register_blueprint(main_bp, url_prefix="/api")
 ```
 
 ---
 
-### 4. Error Handling
+### 3. Project Structure
 
-* Standardize error responses to make APIs predictable
-* Example structure:
+**Recommended Structure:**
 
-```json
-{
-  "error": "ValidationError",
-  "message": "Name is required",
-  "fields": {"name": ["Missing data for required field."]}
-}
+```
+my_flask_app/
+├── app/
+│   ├── __init__.py         # Application factory
+│   ├── routes.py           # Blueprints & endpoints
+│   ├── models.py           # Database models
+│   ├── schemas.py          # Validation schemas
+│   └── utils.py            # Helper functions
+├── config.py               # Environment configurations
+├── run.py                  # Entry point
+└── requirements.txt
 ```
 
-**Flask Integration:**
+---
+
+### 4. Configuration Management
+
+* Use **Python classes** or `.env` files for environment-specific settings
+* Example:
 
 ```python
-from flask import Flask, request, jsonify
-from marshmallow import ValidationError
+class Config:
+    SECRET_KEY = "default-secret"
+    DEBUG = False
 
-app = Flask(__name__)
-user_schema = UserSchema()
+class DevelopmentConfig(Config):
+    DEBUG = True
+    DATABASE_URI = "sqlite:///dev.db"
 
-@app.errorhandler(ValidationError)
-def handle_validation_error(e):
-    return jsonify({
-        "error": "ValidationError",
-        "message": str(e),
-        "fields": e.messages
-    }), 400
+class ProductionConfig(Config):
+    DATABASE_URI = "postgresql://user:pass@prod-db:5432/db"
+```
+
+* Load config in factory:
+
+```python
+app.config.from_object("config.DevelopmentConfig")
 ```
 
 ---
 
 ### 5. Common Mistakes
 
-* Returning raw exceptions to clients
-* Ignoring required fields
-* Inconsistent response formats
-* Mixing serialization logic with business logic
+* Monolithic `app.py` with hundreds of routes
+* Hardcoding configuration values
+* Not using blueprints → messy imports
+* Forgetting to separate models and routes
 
 ---
 
 ## Flask Code Examples
 
-### User API with Validation
+### Minimal Factory + Blueprint
 
 ```python
-from flask import Flask, request, jsonify
-from marshmallow import Schema, fields, validate, ValidationError
+# app/__init__.py
+from flask import Flask
+from .routes import main_bp
 
-app = Flask(__name__)
+def create_app():
+    app = Flask(__name__)
+    app.register_blueprint(main_bp, url_prefix="/api")
+    return app
 
-class UserSchema(Schema):
-    id = fields.Int(dump_only=True)
-    name = fields.Str(required=True, validate=validate.Length(min=1))
-    email = fields.Email(required=True)
+# app/routes.py
+from flask import Blueprint, jsonify
 
-user_schema = UserSchema()
-users = []
+main_bp = Blueprint("main", __name__)
 
-@app.errorhandler(ValidationError)
-def handle_validation_error(e):
-    return jsonify({"error": "ValidationError", "message": str(e), "fields": e.messages}), 400
+@main_bp.route("/health", methods=["GET"])
+def health():
+    return jsonify(status="ok")
+```
 
-@app.route("/users", methods=["POST"])
-def create_user():
-    data = user_schema.load(request.json)
-    user_id = len(users) + 1
-    data["id"] = user_id
-    users.append(data)
-    return user_schema.dump(data), 201
+### Running the App
 
-@app.route("/users/<int:user_id>", methods=["GET"])
-def get_user(user_id):
-    user = next((u for u in users if u["id"] == user_id), None)
-    if not user:
-        return jsonify({"error": "NotFound", "message": "User not found"}), 404
-    return user_schema.dump(user), 200
+```python
+# run.py
+from app import create_app
+
+app = create_app()
+
+if __name__ == "__main__":
+    app.run(debug=True)
 ```
 
 ---
 
 ## Practical Exercises
 
-### Exercise 1 – Input Validation
+### Exercise 1 – App Factory
 
-* Implement a **Product API**
-* Use Marshmallow schemas to validate:
+* Refactor a single-file Flask app into an **application factory** pattern
+* Test the app with development and production configs
 
-  * `name` (string, required)
-  * `price` (float, >0)
-  * `category` (optional string)
+### Exercise 2 – Blueprint Organization
 
-### Exercise 2 – Standardized Error Responses
+* Split routes into at least two blueprints (`users`, `posts`)
+* Register them under `/api/users` and `/api/posts`
 
-* Create a global error handler
-* Ensure all validation errors return:
+### Exercise 3 – Environment Configs
 
-```json
-{
-  "error": "ValidationError",
-  "fields": { ... }
-}
-```
-
-### Exercise 3 – Serialization
-
-* Serialize **output consistently**
-* Remove internal fields (e.g., database IDs) from response
+* Create `.env` files for `development` and `production`
+* Load secret keys and database URIs from `.env`
 
 ---
 
 ## Exercise Solutions
 
-**Product Schema**
+**App Factory**
 
 ```python
-class ProductSchema(Schema):
-    id = fields.Int(dump_only=True)
-    name = fields.Str(required=True)
-    price = fields.Float(required=True, validate=lambda p: p > 0)
-    category = fields.Str()
+def create_app(config_name="development"):
+    app = Flask(__name__)
+    from .routes import main_bp
+    app.register_blueprint(main_bp, url_prefix="/api")
+    return app
 ```
 
-**Error Handler**
+**Blueprints Example**
 
 ```python
-@app.errorhandler(ValidationError)
-def handle_validation_error(e):
-    return jsonify({"error": "ValidationError", "fields": e.messages}), 400
+# app/users.py
+from flask import Blueprint, jsonify
+
+users_bp = Blueprint("users", __name__)
+
+@users_bp.route("/", methods=["GET"])
+def list_users():
+    return jsonify([]), 200
 ```
 
-**Endpoint**
+```python
+# In factory
+app.register_blueprint(users_bp, url_prefix="/api/users")
+```
+
+**Environment Config Example**
 
 ```python
-@app.route("/products", methods=["POST"])
-def create_product():
-    data = product_schema.load(request.json)
-    data["id"] = len(products) + 1
-    products.append(data)
-    return product_schema.dump(data), 201
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+class Config:
+    SECRET_KEY = os.getenv("SECRET_KEY", "dev-secret")
 ```
 
 ---
 
 ## Quiz Questions
 
-1. What is the difference between serialization and deserialization?
-2. Why should error responses be standardized?
-3. How does Marshmallow help enforce validation?
-4. What is `dump_only` used for in schemas?
-5. Name two common mistakes when handling API payloads.
+1. What is an application factory, and why use it?
+2. How do blueprints help organize large APIs?
+3. Why should configuration values not be hardcoded?
+4. Explain the difference between environment-specific configs and default configs.
+5. Give an example of a Flask project structure for a multi-module API.
 
 ---
 
 ## Mini-Project
 
-**Product Management API**
+**Refactor User API into Modular Architecture**
 
-* Endpoints:
+* Split into:
 
-  * `POST /products` → create product
-  * `GET /products/<id>` → get product
-  * `GET /products` → list products with optional filtering
+  * Factory (`create_app`)
+  * Blueprints (`users`, `posts`)
+  * Config classes for `dev` and `prod`
 * Requirements:
 
-  * Input validation via Marshmallow
-  * Consistent JSON error responses
-  * Correct HTTP status codes
-  * Serialized output with only allowed fields
+  * Running in multiple environments
+  * Modular route registration
+  * Clean folder structure
 
 **Evaluation Criteria**
 
-* Validation correctness: 40%
-* Error handling: 30%
-* Serialization consistency: 30%
+* Correct use of factory: 40%
+* Blueprints organization: 30%
+* Config management & environment separation: 30%
 
 ---
 
 ## Interactive Elements
 
-* **Discussion Prompt:** How would you handle a situation where **partial data is valid but some fields fail validation**?
-* **Group Activity:** Take an existing API and **add validation + structured error responses**.
+* **Discussion Prompt:** How would you structure a Flask API with **10+ microservices**?
+* **Group Activity:** Take an existing monolithic Flask app and refactor it using **blueprints and factories**. Document your structure.
 
 ---
 
 ## References
 
-* [Marshmallow Docs](https://marshmallow.readthedocs.io/en/stable/)
-* [Flask Error Handling](https://flask.palletsprojects.com/en/latest/errorhandling/)
-* [API Design – Consistent Error Responses](https://cloud.google.com/apis/design/errors)
+* [Flask Application Factories](https://flask.palletsprojects.com/en/latest/patterns/appfactories/)
+* [Flask Blueprints](https://flask.palletsprojects.com/en/latest/blueprints/)
+* [12-Factor App Config](https://12factor.net/config)
 
 ```
