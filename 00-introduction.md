@@ -51,28 +51,25 @@ By the end, you'll be able to design APIs that work in **internal systems, SaaS 
 
 ## Repo Structure & Usage
 
-Here’s your folder structure in **Markdown** format with proper code block formatting for clarity:
+### Beginner
+1. [Module 1 – Flask Fundamentals & API Basics](01-flask-fundamentals.md)
+2. [Module 2 – Modular API Architecture & Blueprints](02-modular-architecture.md)
+3. [Module 3 – Validation & Serialization](03-validation.md)
+4. [Module 4 – Error Handling & Structured Responses](04-error-handling.md)
 
-```markdown
-API_Flask
-│
-├── README.md                 # Course overview & navigation
-├── 00-introduction.md        # This file
-├── 01-api-fundamentals.md    # Module 1 content
-├── 02-restful-api.md         # Module 2
-├── 03-flask-architecture.md  # Module 3
-├── 04-validation-errors.md   # Module 4
-├── 05-auth.md                # Module 5
-├── 06-security.md            # Module 6
-├── 07-performance.md         # Module 7
-├── 08-versioning-tenancy.md  # Module 8
-├── mid-course-project.md     # Mid-course project
-├── final-capstone.md         # Final project
-├── resources.md              # References & libraries
-├── glossary.md               # Key terms
-├── instructor-guide.md       # Tips & pacing
-└── certificate-template.md   # Markdown certificate
-```
+### Intermediate
+5. [Module 5 – Authentication & JWT](05-auth-jwt.md)
+6. [Module 6 – API Documentation & Testing](06-doc-testing.md)
+7. [Module 7 – Performance Optimization & Caching](07-performance.md)
+8. [Module 8 – API Versioning & Multi-Tenant Design](08-versioning-multitenancy.md)
+
+### Advanced
+9. [Module 9 – Advanced Authentication & OAuth2](09-advanced-auth.md)
+10. [Module 10 – Monitoring, Logging & Observability](10-api-monitoring.md)
+11. [Module 11 – Performance at Scale](11-performance-scaling.md)
+
+### Expert
+12. [Module 12 – Multi-Tenant SaaS & Advanced Versioning](12-multitenancy-advanced.md)
 
 ### Navigation Tips
 - Complete modules **in order** for foundational knowledge.
