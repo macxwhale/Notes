@@ -74,6 +74,9 @@ By the end, you'll be able to design APIs that work in **internal systems, SaaS 
 13. [Module 13 – Testing Strategies](13-testing.md)
 14. [Module 14 – Documentation & Deployment](14-deployment.md)
 
+### Tools & Appendix
+- [**LLM Audit & Fix Guide**](audit-guide.md): Standardized instructions to audit and fix your code.
+
 ### Navigation Tips
 - Complete modules **in order** for foundational knowledge.
 - Each module includes:
