@@ -92,96 +92,114 @@ GET /products?category=electronics&limit=20&offset=40&sort=-price
 
 ---
 
-### 6. Standardized JSON Responses
-Consistency is key. Decide on a structure and stick to it.
+### 6. Standardized JSON Responses (The Envelope Pattern)
 
-#### Success Response
-For resources, return the resource directly or wrapped in an envelope (for metadata).
-**Single Resource:**
-`GET /users/1`
+To provide a professional experience, production APIs use a consistent "Envelope" to wrap every response. This ensures that metadata (pagination, rate limits, status) is always in a predictable location.
+
+#### The "Tech Giant" Blueprint (Inspired by Google & Microsoft Graph)
+This structure is considered a "Gold Standard" for production-grade APIs.
+
+**1. Success Response Blueprint**
+Used for all successful operations (GET, POST, PUT, PATCH).
 ```json
 {
-  "id": 1,
-  "name": "Alice"
+  "status": "success",
+  "code": 200,
+  "message": "Resource retrieved successfully",
+  "data": {
+    "item": {
+       "id": "usr_12345",
+       "name": "Alice Smith",
+       "email": "alice@example.com"
+    }
+  },
+  "meta": {
+    "timestamp": "2023-10-27T10:00:00Z",
+    "version": "v1.4",
+    "request_id": "req_8899aabbcc"
+  }
 }
 ```
-**Collection:**
-`GET /users`
+
+**2. Collection (List) Response Blueprint**
+Includes standard pagination metadata.
 ```json
 {
+  "status": "success",
+  "code": 200,
   "data": [
-    {"id": 1, "name": "Alice"},
-    {"id": 2, "name": "Bob"}
+    { "id": 1, "name": "Item A" },
+    { "id": 2, "name": "Item B" }
   ],
   "meta": {
-    "total": 100,
-    "page": 1
+    "pagination": {
+      "total_items": 1250,
+      "page_size": 10,
+      "current_page": 1,
+      "total_pages": 125,
+      "next_page_url": "/api/v1/items?page=2"
+    }
   }
 }
 ```
 
-#### Error Response
-Always return a consistent error object. **Never** return plain text or HTML.
+**3. Error Response Blueprint**
+Never return just a string. Use a structured error object.
 ```json
 {
+  "status": "error",
+  "code": 400,
   "error": {
-    "code": "validation_error",
-    "message": "Invalid email format",
-    "fields": {"email": "Must be a valid address"}
+    "type": "validation_error",
+    "message": "Invalid input provided.",
+    "details": [
+      {
+        "field": "email",
+        "issue": "must be a valid email address",
+        "received": "invalid-email"
+      },
+      {
+        "field": "password",
+        "issue": "too short (minimum 8 characters)"
+      }
+    ],
+    "help_url": "https://docs.api.com/errors/validation"
   }
 }
 ```
 
-#### Response Examples by Verb
-
-**1. GET (Retrieve)**
-`200 OK`
-```json
-{
-  "id": 1,
-  "name": "Alice",
-  "email": "alice@example.com"
-}
-```
-
-**2. POST (Create)**
-`201 Created` - Returns the created resource with its new ID.
-```json
-{
-  "id": 101,
-  "name": "New User",
-  "email": "new@example.com",
-  "created_at": "2023-10-01T12:00:00Z"
-}
-```
-
-**3. PUT (Full Update)**
-`200 OK` - Returns the completely replaced resource.
-```json
-{
-  "id": 1,
-  "name": "Alice Updated",
-  "email": "alice_new@example.com"
-}
-```
-
-**4. PATCH (Partial Update)**
-`200 OK` - Returns the updated resource (merged view).
-```json
-{
-  "id": 1,
-  "name": "Alice Updated",
-  "email": "alice@example.com"  // Unchanged field remains
-}
-```
-
-**5. DELETE (Remove)**
-`204 No Content`
-*(No Body)* - The server successfully processed the request and is not returning any content.
+#### Why Use This Pattern?
+*   **Consistency**: Clients can write a single "Response Wrapper" class to parse every API call.
+*   **Predictability**: Errors are always in the `error` key, data in `data`.
+*   **Scalability**: You can add more metadata (like server performance or feature flags) to `meta` without breaking existing data parsing logic.
 
 ---
 
-### 7. REST Anti-Patterns
+### 7. Response Examples by Verb
+
+**1. GET (Retrieve)**
+`200 OK`
+Wrapped in success blueprint.
+
+**2. POST (Create)**
+`201 Created`
+Returns the created resource with its new ID inside the `data` block.
+
+**3. PUT (Full Update)**
+`200 OK`
+Returns the completely replaced resource inside `data`.
+
+**4. PATCH (Partial Update)**
+`200 OK`
+Returns the updated resource (merged view) inside `data`.
+
+**5. DELETE (Remove)**
+`204 No Content`
+*(Empty Envelope or No Body)* - Generally, a 204 has no body. If your standard requires an envelope, use a `200 OK` with `data: null`.
+
+---
+
+### 8. REST Anti-Patterns
 - Using verbs in URLs (`/createUser`)
 - Overloading a single endpoint for multiple resources
 - Ignoring proper HTTP methods
