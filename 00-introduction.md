@@ -53,22 +53,23 @@ By the end, you'll be able to design APIs that work in **internal systems, SaaS 
 
 API_Flask
 │
-├── README.md # Course overview & navigation
-├── 00-introduction.md # This file
-├── 01-api-fundamentals.md # Module 1 content
-├── 02-restful-api.md # Module 2
-├── 03-flask-architecture.md # Module 3
-├── 04-validation-errors.md # Module 4
-├── 05-auth.md # Module 5
-├── 06-security.md # Module 6
-├── 07-performance.md # Module 7
-├── 08-versioning-tenancy.md # Module 8
-├── mid-course-project.md # Mid-course project
-├── final-capstone.md # Final project
-├── resources.md # References & libraries
-├── glossary.md # Key terms
-├── instructor-guide.md # Tips & pacing
-└── certificate-template.md # Markdown certificate
+├── README.md                 # Course overview & navigation
+├── 00-introduction.md        # This file
+├── 01-api-fundamentals.md    # Module 1 content
+├── 02-restful-api.md         # Module 2
+├── 03-flask-architecture.md  # Module 3
+├── 04-validation-errors.md   # Module 4
+├── 05-auth.md                # Module 5
+├── 06-security.md            # Module 6
+├── 07-performance.md         # Module 7
+├── 08-versioning-tenancy.md  # Module 8
+├── mid-course-project.md     # Mid-course project
+├── final-capstone.md         # Final project
+├── resources.md              # References & libraries
+├── glossary.md               # Key terms
+├── instructor-guide.md       # Tips & pacing
+└── certificate-template.md   # Markdown certificate
+
 
 
 ### Navigation Tips
