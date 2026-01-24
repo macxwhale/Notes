@@ -54,7 +54,6 @@ By the end, you'll be able to design APIs that work in **internal systems, SaaS 
 ### Beginner
 1. [Module 1 – API Fundamentals & Basics](01-api-fundamentals.md)
 2. [Module 2 – Modular API Architecture & Blueprints](02-restful-api.md)
-
 3. [Module 3 – Flask Architecture](03-flask-architecture.md)
 4. [Module 4 – Error Handling & Structured Responses](04-validation-errors.md)
 
