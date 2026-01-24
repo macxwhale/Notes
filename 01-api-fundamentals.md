@@ -47,34 +47,73 @@ Content-Type: application/json
 | Method | Description | Idempotent? |
 |--------|------------|------------|
 | GET    | Retrieve resource | Yes |
+| HEAD   | Retrieve headers only | Yes |
 | POST   | Create resource | No |
 | PUT    | Replace resource | Yes |
 | PATCH  | Update resource | No (partial) |
 | DELETE | Remove resource | Yes |
+| OPTIONS| Check allowed methods | Yes |
 
 **Idempotency:** Repeating the same request has the same effect on the server.
 
 ---
 
-### 3. Status Codes
-- **2xx:** Success
-- **4xx:** Client error
-- **5xx:** Server error
+### 3. HTTP Status Codes
+Status codes tell the client what happened. They are grouped by the first digit.
 
+#### 2xx: Success
 | Code | Meaning | Use Case |
 |------|--------|---------|
-| 200 | OK | Successful GET/PUT |
-| 201 | Created | Successful POST |
-| 204 | No Content | Successful DELETE |
-| 400 | Bad Request | Validation failure |
-| 401 | Unauthorized | Missing/invalid auth |
-| 403 | Forbidden | Insufficient permissions |
-| 404 | Not Found | Resource not found |
-| 500 | Internal Server Error | Unexpected failure |
+| **200** | OK | Standard success for GET, PUT, or DELETE (if content returned). |
+| **201** | Created | Resource successfully created (POST). Should return `Location` header. |
+| **202** | Accepted | Request accepted for background processing (Async). |
+| **204** | No Content | Request successful, but no body returned (common for DELETE). |
+
+#### 3xx: Redirection
+| Code | Meaning | Use Case |
+|------|--------|---------|
+| **301** | Moved Permanently | Resource moved to a new URL. |
+| **304** | Not Modified | Client's cached version is still valid (Caching). |
+| **307** | Temporary Redirect | Resource temporarily at different URL (keep method). |
+
+#### 4xx: Client Errors
+| Code | Meaning | Use Case |
+|------|--------|---------|
+| **400** | Bad Request | Generic client error (malformed JSON, invalid syntax). |
+| **401** | Unauthorized | Missing or invalid authentication token. |
+| **403** | Forbidden | Authenticated, but permissions denied. |
+| **404** | Not Found | Resource does not exist. |
+| **405** | Method Not Allowed | Wrong HTTP method (e.g., POST on a GET-only URL). |
+| **409** | Conflict | State conflict (e.g., creating a user with existing email). |
+| **415** | Unsupported Media Type | Client sent incorrect format (e.g., XML instead of JSON). |
+| **422** | Unprocessable Entity | Validation errors (well-formed syntax, but semantic errors). |
+| **429** | Too Many Requests | Rate limit exceeded. |
+
+#### 5xx: Server Errors
+| Code | Meaning | Use Case |
+|------|--------|---------|
+| **500** | Internal Server Error | Unexpected server crash or unhandled exception. |
+| **502** | Bad Gateway | Upstream service (e.g., Gunicorn) failed. |
+| **503** | Service Unavailable | Server overloaded or under maintenance. |
+| **504** | Gateway Timeout | Upstream service took too long to respond. |
 
 ---
 
-### 4. Common Mistakes & Anti-Patterns
+### 4. Common HTTP Headers
+Headers provide metadata about the request or response.
+
+| Header | Type | Description |
+|--------|------|-------------|
+| **Content-Type** | Both | The format of the body (e.g., `application/json`, `text/html`). |
+| **Accept** | Request | The format the client *wants* to receive. |
+| **Authorization** | Request | Credentials to authenticate the user (e.g., `Bearer <token>`). |
+| **User-Agent** | Request | Identifies the client software (browser, script, mobile app). |
+| **Location** | Response | URL of a newly created resource (used with `201 Created`). |
+| **Cache-Control** | Response | Directives for caching mechanisms (e.g., `no-cache`, `max-age=3600`). |
+
+---
+
+### 5. Common Mistakes & Anti-Patterns
 - Always returning `200 OK` even on errors
 - Using verbs in URLs (`/getUsers`)
 - Ignoring HTTP methods
