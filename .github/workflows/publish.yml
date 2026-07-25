@@ -2,7 +2,7 @@ name: Publish Notes to Bunisystems Blog
 
 on:
   push:
-    branches: [main]
+    branches: [AWS]
     paths:
       - 'Module **/*.md'
       - 'Module **'
