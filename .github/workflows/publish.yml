@@ -1,0 +1,30 @@
+name: Publish Notes to Bunisystems Blog
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'Module **/*.md'
+      - 'Module **'
+  workflow_dispatch: # allow manual trigger
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Publish notes to WordPress
+        run: node publish.mjs
+        env:
+          WP_URL: ${{ secrets.WP_URL }}
+          WP_USER: ${{ secrets.WP_USER }}
+          WP_APP_PASSWORD: ${{ secrets.WP_APP_PASSWORD }}
+          BUNISYSTEMS_DISPATCH_TOKEN: ${{ secrets.BUNISYSTEMS_DISPATCH_TOKEN }}
+          BUNISYSTEMS_REPO: macxwhale/bunisystems
