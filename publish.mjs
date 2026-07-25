@@ -2,8 +2,8 @@
  * publish.mjs — syncs Notes markdown files to WordPress as a blog series
  * Triggered by GitHub Actions on push to main
  *
- * Each folder (e.g. "Module 1") becomes a WordPress series tag.
- * Each .md file becomes a WordPress post assigned to that tag.
+ * Each folder (e.g. "Module 1") becomes a WordPress series category (slug: series-module-1).
+ * Each .md file becomes a WordPress post assigned to that category + the root "blog" category.
  * Post order follows the numeric prefix on the filename.
  */
 
@@ -82,12 +82,11 @@ function toSlug(str) {
   return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 }
 
-// ── Ensure tag exists, return id ─────────────────────────────────────────────
-async function ensureTag(name) {
-  const slug = toSlug(name);
-  const existing = await wpFetch(`tags?slug=${slug}`);
+// ── Ensure a category exists, return it ──────────────────────────────────────
+async function ensureCategory(name, slug) {
+  const existing = await wpFetch(`categories?slug=${slug}`);
   if (existing.length) return existing[0];
-  return wpFetch('tags', { method: 'POST', body: JSON.stringify({ name, slug }) });
+  return wpFetch('categories', { method: 'POST', body: JSON.stringify({ name, slug }) });
 }
 
 // ── Find existing post by slug ────────────────────────────────────────────────
@@ -97,14 +96,14 @@ async function findPost(slug) {
 }
 
 // ── Create or update a post ───────────────────────────────────────────────────
-async function upsertPost({ title, slug, content, excerpt, tags, order }) {
+async function upsertPost({ title, slug, content, excerpt, categories, order }) {
   const payload = {
     title,
     slug,
     content,
     excerpt,
     status: 'publish',
-    tags: tags.map(t => t.id),
+    categories: categories.map(c => c.id),
     meta: { series_order: order },
   };
 
@@ -138,6 +137,9 @@ async function triggerRebuild() {
 
 // ── Main ──────────────────────────────────────────────────────────────────────
 async function main() {
+  // Look up (or create) the root "blog" category — posts must be in it to appear on /blog
+  const blogCategory = await ensureCategory('Blog', 'blog');
+
   const root = __dirname;
   const entries = readdirSync(root).filter(f => {
     try { return statSync(join(root, f)).isDirectory() && /^Module/i.test(f); } catch { return false; }
@@ -147,7 +149,8 @@ async function main() {
 
   for (const folder of entries) {
     console.log(`\nProcessing: ${folder}`);
-    const seriesTag = await ensureTag(folder);
+    // Series must be a category with slug "series-*" — that's what the frontend detects
+    const seriesCategory = await ensureCategory(folder, `series-${toSlug(folder)}`);
 
     const files = readdirSync(join(root, folder))
       .filter(f => extname(f) === '.md')
@@ -165,7 +168,7 @@ async function main() {
       const content = mdToHtml(raw);
       const excerpt = raw.replace(/[#*`>\n-]/g, ' ').trim().slice(0, 160);
 
-      await upsertPost({ title, slug, content, excerpt, tags: [seriesTag], order: i + 1 });
+      await upsertPost({ title, slug, content, excerpt, categories: [blogCategory, seriesCategory], order: i + 1 });
       totalPosts++;
     }
   }
